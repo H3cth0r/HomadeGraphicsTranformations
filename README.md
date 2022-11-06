@@ -10,7 +10,7 @@ pip install pygame
 
 ## Moving around the pygame environment
 keys 1, 2, 3, 4 are the keys for controlling rotation.
-keys ASDW are the keys for movin up, down, left and right. 
+keys ASDW are the keys for moving up, down, left and right. 
 
 
 ## Running videos
