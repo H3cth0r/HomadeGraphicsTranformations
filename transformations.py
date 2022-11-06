@@ -1,6 +1,9 @@
 import math
 import numpy as np
 class Point:
+
+	debugModeOn = False
+
 	translateMatrix = [[ 1,  0,  0, -1],
 			   [ 0,  1,  0, -1],
 			   [ 0,  0,  1, -1],
@@ -18,9 +21,10 @@ class Point:
 			   [ 0,  0,  1,  0],
 			   [ 0,  0,  0,  1]]
 	rotateMatrixY	= [[-1,  0, -1,  0],
-			   [ 0,  1,  0,  0],
-			   [-1,  0, -1,  0],
-			   [ 0,  0,  0,  1]]
+			   		   [ 0,  1,  0,  0],
+			   		   [-1,  0, -1,  0],
+			   		   [ 0,  0,  0,  1]]
+
 	def __init__(self, coords_t):
 		self.coords = coords_t
 
@@ -32,13 +36,23 @@ class Point:
 
 	def dodprod(self, mat, oldp):
 		res = []
+		operations = """"""
+		operation = """"""
 		for row in mat:
 			counter = 0
 			rowSum = 0
 			for i in row:
 				rowSum += i * oldp[counter][0]
+				operation = operation + f"{i * oldp[counter][0]}, "
+				operations = operations + f"{i} * {oldp[counter][0]}, "
 				counter += 1
+			operation += "\n"
+			operations += "\n"
 			res.append(rowSum)
+		if self.debugModeOn:
+			print(f"MULTIPLY by : {oldp}")
+			print(operations)
+			print(operation)
 		return res
 
 	
@@ -48,16 +62,20 @@ class Point:
 		self.translateMatrix[0][3] = points_t[0]
 		self.translateMatrix[1][3] = points_t[1]
 		self.translateMatrix[2][3] = points_t[2]
-		self.printMatrix(self.translateMatrix)
 		lcoords = []
 		for i in list(self.coords):
 			lcoords.append([i])
 		lcoords.append([1])
+		if self.debugModeOn:
+			print(f"TRANSLATE MATRIX")
+			self.printMatrix(self.translateMatrix)
 		translateres = self.dodprod(self.translateMatrix, lcoords)
 		for i in range(len(translateres)):
-			translateres[i] = round(translateres[i], 2)
+			translateres[i] = translateres[i]
 		self.coords = tuple(translateres[:-1])
-		print(self.coords)
+		
+		if self.debugModeOn:
+			print(f"TRANSLATE MATRIX RESULT: {self.coords}")
 
 	# Scale operations
 	def scale(self, points_t):
@@ -68,15 +86,25 @@ class Point:
 		for i in list(self.coords):
 			lcoords.append([i])
 		lcoords.append([1])
+		if self.debugModeOn:
+			print("SCALE MATRIX")
+			self.printMatrix(self.scaleMatrix)
 		scaleres = self.dodprod(self.scaleMatrix, lcoords)
 		for i in range(len(scaleres)):
-			scaleres[i] = round(scaleres[i], 2)
+			scaleres[i] = scaleres[i], 2
 		self.coords = tuple(scaleres[:-1])
-		print(self.coords)
+
+		if self.debugModeOn:
+			print(f"RESULT SCALE MATRIX{self.coords}")
 	
 	def scaleOnFactor(self, factor):
 		factorized_points = (factor, factor, factor)
+		if self.debugModeOn:
+			print("SCALE ON FACTOR")
 		self.scale(factorized_points)
+
+		if self.debugModeOn:
+			print(f"SCALE ON FACTOR RESULT: {self.coords}")
 
 	# Rotation operations
 	def rotateOnX(self, degs):
@@ -90,12 +118,17 @@ class Point:
 		for i in list(self.coords):
 			lcoords.append([i])
 		lcoords.append([1])
+		if self.debugModeOn:
+			print("ROTATE ON X")
+			self.printMatrix(self.rotateMatrixX)
 		rotateXres = self.dodprod(self.rotateMatrixX, lcoords)
-		print(self.rotateMatrixX)
+		#print(self.rotateMatrixX)
 		for i in range(len(rotateXres)):
-			rotateXres[i] = round(rotateXres[i], 2)
+			rotateXres[i] = rotateXres[i]
 		self.coords = tuple(rotateXres[:-1])
-		print(self.coords)
+		
+		if self.debugModeOn:
+			print(f"RESULT ROTATE ON X: {self.coords}")
 		
 		
 	def rotateOnY(self, degs):
@@ -109,11 +142,16 @@ class Point:
 		for i in list(self.coords):
 			lcoords.append([i])
 		lcoords.append([1])
+		if self.debugModeOn:
+			print("ROTATE ON Y")
+			self.printMatrix(self.rotateMatrixY)
 		rotateYres = self.dodprod(self.rotateMatrixY, lcoords)
 		for i in range(len(rotateYres)):
-			rotateYres[i] = round(rotateYres[i], 2)
+			rotateYres[i] = rotateYres[i]
 		self.coords = tuple(rotateYres[:-1])
-		print(self.coords)
+		
+		if self.debugModeOn:
+			print(f"ROTATE ON Y RESULT: {self.coords}")
 
 	def rotateOnZ(self, degs):
 		x = lambda a : a *(math.pi/180)
@@ -126,11 +164,16 @@ class Point:
 		for i in list(self.coords):
 			lcoords.append([i])
 		lcoords.append([1])
+		if self.debugModeOn:
+			print("ROTATE ON Z")
+			self.printMatrix(self.rotateMatrixZ)
 		rotateZres = self.dodprod(self.rotateMatrixZ, lcoords)
 		for i in range(len(rotateZres)):
-			rotateZres[i] = round(rotateZres[i], 2)
+			rotateZres[i] = rotateZres[i]
 		self.coords = tuple(rotateZres[:-1])
-		print(self.coords)
+		
+		if self.debugModeOn:
+			print(f"ROTATE ON Z RESULT: {self.coords}")
 	
 	def rotateOnPivotX(self, pivot, degs):
 		aux_coords = self.coords
@@ -139,9 +182,15 @@ class Point:
 		negPivot[1] *= -1
 		negPivot[2] *= -1
 		negPivot = tuple(negPivot)
+		if self.debugModeOn:
+			print("ROTATE ON PIVOT X")
 		self.translate(negPivot)
 		self.rotateOnX(degs)
 		self.translate(pivot)
+
+		if self.debugModeOn:
+			print(f"ROTATE ON PIVOT X RESULT: {self.coords}")
+
 	def rotateOnPivotXprof(self, pivot, degs):
 		aux_coords = self.coords
 		self.translate(pivot)
@@ -154,13 +203,16 @@ class Point:
 		negPivot[0] *= -1
 		negPivot[1] *= -1
 		negPivot[2] *= -1 
+		if self.debugModeOn:
+			print("ROTATE ON PIVOT Y")
 		negPivot = tuple(negPivot)
-		print("TRANSLATE")
 		self.translate(negPivot)
-		print("ROTATE")
 		self.rotateOnY(degs)
-		print("TRANSLATE TO PIVOT")
 		self.translate(pivot)
+
+		if self.debugModeOn:
+			print(f"ROTATE ON PIVOT Y RESULT: {self.coords}")
+
 	def rotateOnPivotYprof(self, pivot, degs):
 		aux_coords = self.coords
 		self.translate(pivot)
@@ -174,9 +226,15 @@ class Point:
 		negPivot[1] *= -1
 		negPivot[2] *= -1
 		negPivot = tuple(negPivot)
+		if self.debugModeOn:
+			print("ROTATE ON PIVOT Z")
 		self.translate(negPivot)
 		self.rotateOnZ(degs)
 		self.translate(pivot)
+
+		if self.debugModeOn:
+			print(f"ROTATE ON PIVOT Z RESULT: {self.coords}")
+
 	def rotateOnPivotZprof(self, pivot, degs):
 		aux_coords = self.coords
 		self.translate(pivot)

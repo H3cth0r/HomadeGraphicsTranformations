@@ -8,6 +8,13 @@ C = tf.Point((-1.812 + (x/2), -6.824 - (math.sqrt(3)/6)*x, 5.247))
 D = tf.Point((-1.812, -6.824, 5.247 - math.sqrt(2/3)*x))
 M = tf.Point((-1.812, -6.824, 5.247 - (math.sqrt(3)/6)*x))
 
+A.debugModeOn = True
+B.debugModeOn = True
+C.debugModeOn = True
+D.debugModeOn = True
+D.debugModeOn = True
+M.debugModeOn = True
+
 print(A.coords)
 print(B.coords)
 print(C.coords)
@@ -21,6 +28,7 @@ for i in range(3):
 	res[i] /= 4
 
 centroid = tf.Point(tuple(res))
+centroid.debugModeOn = True
 
 print(f"CENTROID: {centroid.coords}")
 
@@ -132,13 +140,6 @@ while True:
 		else:
 			pimid.rotateOnPivotY(pimid.centroid.coords, -1)
 			degs -= 1
-	if forward == False:
-		if degs == 0:
-			forward = True
-		else:
-			pimid.rotateOnPivotY(pimid.centroid.coords, 1)
-			degs += 1
-	print("=============================")
 	#pimid.rotateOnPivotY(pimid.centroid.coords, 1)
 	draw_pyramid(pimid.vertix, pimid.faces)
 	draw_axis_lines()

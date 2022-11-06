@@ -6,14 +6,13 @@ B = (4, 3, 1)
 C = (3, 2, 4)
 
 Q = tf.Point(A)
-print("======")
-print("Scale on factor")
+Q.debugModeOn = True
 Q.scaleOnFactor(factor)
-print("======")
+print("===========================================")
 Q.translate(B)
-
+print("===========================================")
 res = tf.Point(C)
-print("rotate on pivot")
+res.debugModeOn = True
 res.rotateOnPivotX(Q.coords, 45)
 
 #p.translate((1, 1, 2))
