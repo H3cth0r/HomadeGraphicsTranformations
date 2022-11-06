@@ -1,10 +1,19 @@
 # HomadeGraphicsTranformations
-Some transformations operations
+This is my implementation of 3d transformations, applying matrix operations. The file "transformations.py"
+contains the set of classes and methods for making some transformations.
+
+## Running requirenments
+```
+pip install PyOpenGL PyOpenGL_accelerate
+pip install pygame
+```
+
+## Moving around the pygame environment
+keys 1, 2, 3, 4 are the keys for controlling rotation.
+keys ASDW are the keys for movin up, down, left and right. 
 
 
-
-
-
+## Running videos
 https://user-images.githubusercontent.com/43997408/200194165-7b6b0967-31a5-498c-aa3c-8f71637f07e3.mov
 
 
