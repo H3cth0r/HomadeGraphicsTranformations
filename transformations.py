@@ -91,6 +91,7 @@ class Point:
 			lcoords.append([i])
 		lcoords.append([1])
 		rotateXres = self.dodprod(self.rotateMatrixX, lcoords)
+		print(self.rotateMatrixX)
 		for i in range(len(rotateXres)):
 			rotateXres[i] = round(rotateXres[i], 2)
 		self.coords = tuple(rotateXres[:-1])
@@ -141,12 +142,42 @@ class Point:
 		self.translate(negPivot)
 		self.rotateOnX(degs)
 		self.translate(pivot)
+	def rotateOnPivotXprof(self, pivot, degs):
+		aux_coords = self.coords
+		self.translate(pivot)
+		self.rotateOnX(degs)
+		self.translate(aux_coords)
+
 	def rotateOnPivotY(self, pivot, degs):
+		aux_coords = self.coords
+		negPivot = list(pivot)
+		negPivot[0] *= -1
+		negPivot[1] *= -1
+		negPivot[2] *= -1 
+		negPivot = tuple(negPivot)
+		print("TRANSLATE")
+		self.translate(negPivot)
+		print("ROTATE")
+		self.rotateOnY(degs)
+		print("TRANSLATE TO PIVOT")
+		self.translate(pivot)
+	def rotateOnPivotYprof(self, pivot, degs):
 		aux_coords = self.coords
 		self.translate(pivot)
 		self.rotateOnY(degs)
 		self.translate(aux_coords)
+
 	def rotateOnPivotZ(self, pivot, degs):
+		aux_coords = self.coords
+		negPivot = list(pivot)
+		negPivot[0] *= -1
+		negPivot[1] *= -1
+		negPivot[2] *= -1
+		negPivot = tuple(negPivot)
+		self.translate(negPivot)
+		self.rotateOnZ(degs)
+		self.translate(pivot)
+	def rotateOnPivotZprof(self, pivot, degs):
 		aux_coords = self.coords
 		self.translate(pivot)
 		self.rotateOnZ(degs)
@@ -154,5 +185,15 @@ class Point:
 
 class Objeto:
 	
+	centroid = (0, 0, 0)
 	vertix = []
-	edges  = []
+	faces  = []
+
+	def rotateOnPivotY(self, pivot, degs):
+		for v in self.vertix:
+			v.rotateOnPivotY(pivot, degs)	
+			print("==========")
+	def rotateOnY(self, degs):
+		for v in self.vertix:
+			v.rotateOnY(degs)
+
