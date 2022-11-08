@@ -46,45 +46,48 @@ pimid.faces.append((2, 0, 3))
 pimid.faces.append((0, 1, 3))
 
 
+# Importing libraries for ploting result
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-
+# function to plot the pyramid on the openGL-pygame screen
 def draw_pyramid(vert, faces):
-	glBegin(GL_TRIANGLES)
+	glBegin(GL_TRIANGLES)   # We tell the program to draw triangles with vertices input
 	
-	clrs = [(0.2, 0.6, 0.3), (0.7, 0, 0.5), (1, 0.6, 0), (0.1, 0, 1)]
+	clrs = [(0.2, 0.6, 0.3), (0.7, 0, 0.5), (1, 0.6, 0), (0.1, 0, 1)] # list of sides colors
 	for i in range(len(faces)):
-		glColor(*clrs[i])
+		glColor(*clrs[i])   # Select a color for the face
 		for j in faces[i]:
-			glVertex3f(*vert[j].coords)
+			glVertex3f(*vert[j].coords) # add a vertex from the list of vertices of the pyramid obj
 		
-	glEnd()
+	glEnd()     # end drawing
 
+# Method for printing the x, y, z axis 
 def draw_axis_lines():
 	glBegin(GL_LINES)
 	
-	# x axis
+	# x axis red
 	glColor3f(1.0,0.0,0.0)
 	glVertex3f(-10.0, 0.0, 0.0)
 	glVertex3f(10.0, 0.0, 0.0)
 
-	# y axis
+	# y axis green
 	glColor3f(0.0,1.0,0.0)
 	glVertex3f(0.0, -10.0, 0.0)
 	glVertex3f(0.0, 10.0, 0.0)
 	
-	# z axis
+	# z axis blue
 	glColor3f(0.0,0.0,1.0)
 	glVertex3f(0.0, 0.0, -10.0)
 	glVertex3f(0.0, 0.0, 10.0)
 
 	glEnd()
 
-up_down_angle = 0.0
+up_down_angle = 0.0 # variable to keep track of angle of visualization
 
+# function to read user movements with keys
 def read_user_movements():
 	# Get keys
 	keypress = pygame.key.get_pressed()
@@ -117,33 +120,38 @@ def read_user_movements():
 		glRotatef(-0.11, 0.0, 1, 0.0)
 
 
-pygame.init()
-display = (800, 600)
-pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
-pygame.display.set_caption("3D Pyramid")
-gluPerspective(45, (display[0]/display[1]), 0.1, 50)
-glTranslate(0, 0, 0-30)
+pygame.init()       # init pygame screen
+display = (800, 600) # create window with size
+pygame.display.set_mode(display, DOUBLEBUF|OPENGL) # display with opengl parameters
+pygame.display.set_caption("3D Pyramid")    # screen title
+gluPerspective(45, (display[0]/display[1]), 0.1, 50)    # visualization perspective
+glTranslate(0, 0, 0-30)     # initial translate position for camera
 
 forward = True
 degs = 0
 
+# loop for keeping drawign and listening for keys
 while True:
+    # if quiting
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			quit()
 	#glRotate(1, 1, 1, 1)
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+    # Rotating the pyramid
 	if forward == True:
 		if degs == -15:
 			forward = False
 		else:
+            # using custom function for rotating the points of a pivot
 			pimid.rotateOnPivotY(pimid.centroid.coords, -1)
 			degs -= 1
 	#pimid.rotateOnPivotY(pimid.centroid.coords, 1)
-	draw_pyramid(pimid.vertix, pimid.faces)
-	draw_axis_lines()
-	read_user_movements()
+	draw_pyramid(pimid.vertix, pimid.faces) # draw piramid with points changes
+	draw_axis_lines()   # draw axis lines
+	read_user_movements()  
 	pygame.display.flip()
 	pygame.time.wait(15)
 
